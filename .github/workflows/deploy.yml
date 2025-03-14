@@ -1,6 +1,9 @@
 name: Deploy Bot
 
 on:
+  schedule:
+    - cron: "0 13 * * *" # 台灣時間21:00
+
   push:
 
 jobs:
@@ -23,6 +26,6 @@ jobs:
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-        run: python hsr_main.py
+        run: python main.py
 
 
