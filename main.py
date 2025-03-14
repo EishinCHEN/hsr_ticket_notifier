@@ -26,7 +26,7 @@ def check_and_notify_holidays(holidays: list):
         send_text_message(message)  # 發送正常運行通知
 
 def main():
-    holidays = fetch_hsr_holiday_info() + fetch_tra_holiday_info
+    holidays = fetch_hsr_holiday_info() + fetch_tra_holiday_info()
     check_and_notify_holidays(holidays)
 
 if __name__ == "__main__":
