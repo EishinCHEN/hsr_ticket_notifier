@@ -19,9 +19,7 @@ def fetch_tra_holiday_info() -> list[HolidayInfo]:
             case 1:
                 holiday_name = tds[0].text
                 holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, tds[1].text)) 
-                print(HolidayInfo(holiday_name, tds[3].text, tds[1].text))
             case _:
                 holiday_name = tds[0].find("p").text
                 holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, tds[1].text))
-                print(HolidayInfo(holiday_name, tds[3].text, tds[1].text))
     return holidays
