@@ -1,14 +1,6 @@
 import requests
 import bs4
-from dataclasses import dataclass
-from datetime import date, datetime
-
-# 裝載連假售票資訊
-@dataclass
-class HolidayInfo:
-  holiday_name: str
-  holiday_perid: str
-  saleing_date: date
+from models import HolidayInfo 
 
 def fetch_tra_holiday_info() -> list[HolidayInfo]:
     # 取得台鐵公告連假售票資訊
@@ -26,10 +18,10 @@ def fetch_tra_holiday_info() -> list[HolidayInfo]:
                 continue
             case 1:
                 holiday_name = tds[0].text
-                holidays.append(HolidayInfo(holiday_name, tds[3].text, tds[1].text)) 
+                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, tds[1].text)) 
                 print(HolidayInfo(holiday_name, tds[3].text, tds[1].text))
             case _:
                 holiday_name = tds[0].find("p").text
-                holidays.append(HolidayInfo(holiday_name, tds[3].text, tds[1].text))
+                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, tds[1].text))
                 print(HolidayInfo(holiday_name, tds[3].text, tds[1].text))
     return holidays
