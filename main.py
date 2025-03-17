@@ -21,9 +21,10 @@ def check_and_notify_holidays(holidays: list):
             found_sale = True
             break
 
-        if not found_sale:
-            message = "目前明天沒有連假售票資訊，小精靈沒有偷睡覺哦~"
-            send_text_message(message)  # 發送正常運行通知
+    # 待售票資訊迭待完成再寄送正常運行通知
+    if not found_sale:
+        message = "目前明天沒有連假售票資訊，小精靈沒有偷睡覺哦~"
+        send_text_message(message)  # 發送正常運行通知
 
 def main():
     holidays = fetch_hsr_holiday_info() + fetch_tra_holiday_info()
