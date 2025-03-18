@@ -23,7 +23,7 @@ def check_and_notify_holidays(holidays: list):
 
     # 待售票資訊迭待完成再寄送正常運行通知
     if not found_sale:
-        message = "目前明天沒有連假售票資訊，小精靈沒有偷睡覺哦~"
+        message = "欸欸！都幾點了！ 回家沒？\n 啊還有我看過了啦！ \n明天不會賣連假的票 \n 今天可以去睡覺了啦！"
         send_text_message(message)  # 發送正常運行通知
 
 def main():
