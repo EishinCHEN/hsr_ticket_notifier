@@ -10,8 +10,17 @@ def check_and_notify_holidays(holidays: list):
     today = datetime.today().date()
     tomorrow = today + timedelta(days = 1)
   
+    closest_holiday_name = None
+    closest_holiday_date = None
     found_sale = False
     for holidaysItem in holidays:
+        # 檢查最近的節日與售票日期
+        if holidaysItem.saleing_date and holidaysItem.saleing_date >= today:
+            if closest_holiday_date is None or holidaysItem.saleing_date < closest_holiday_date:
+                closest_holiday_date = holidaysItem.saleing_date
+                closest_holiday_name = holidaysItem.holiday_name
+        
+        # 檢查是否為明天售票
         if(holidaysItem.saleing_date == tomorrow):
             match holidaysItem.company_name:
                 case "hsr":
@@ -32,7 +41,7 @@ def check_and_notify_holidays(holidays: list):
         # 組合訊息內容
         random_beginning_message = random.choice(messages_data["beginning"])
         random_ending_message = random.choice(messages_data["ending"])
-        message = random_beginning_message+"明天沒有賣連假的票！"+random_ending_message
+        message = random_beginning_message+"\n明天沒有賣"+closest_holiday_name+"的票~"+random_ending_message
         send_text_message(message)  # 發送正常運行通知
 
 def main():
