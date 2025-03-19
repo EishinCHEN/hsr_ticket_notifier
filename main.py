@@ -1,3 +1,5 @@
+import json
+import random
 from datetime import date, datetime, timedelta
 from hsr_spider import fetch_hsr_holiday_info
 from tra_spider import fetch_tra_holiday_info
@@ -13,9 +15,9 @@ def check_and_notify_holidays(holidays: list):
         if(holidaysItem.saleing_date == tomorrow):
             match holidaysItem.company_name:
                 case "hsr":
-                    message = f"{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假高鐵車票將於{holidaysItem.saleing_date}開始販售"
+                    message = f"小精靈重磅登場✨✨\n{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假高鐵車票將於{holidaysItem.saleing_date}開始販售"
                 case "tra":
-                    message = f"{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假台鐵車票將於{holidaysItem.saleing_date}開始販售"
+                    message = f"小精靈重磅登場✨✨\n{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假台鐵車票將於{holidaysItem.saleing_date}開始販售"
       
             send_text_message(message) # 發送售票通知
             found_sale = True
@@ -23,7 +25,14 @@ def check_and_notify_holidays(holidays: list):
 
     # 待售票資訊迭待完成再寄送正常運行通知
     if not found_sale:
-        message = "欸欸！都幾點了！ 回家沒？\n 啊還有我看過了啦！ \n明天不會賣連假的票 \n 今天可以去睡覺了啦！"
+        # 讀取 JSON 訊息模板
+        with open("messages.json", "r", encoding="utf-8") as file:
+            messages_data = json.load(file)
+        
+        # 組合訊息內容
+        random_beginning_message = random.choice(messages_data["beginning"])
+        random_ending_message = random.choice(messages_data["ending"])
+        message = random_beginning_message+"明天沒有賣連假的票！"+random_ending_message
         send_text_message(message)  # 發送正常運行通知
 
 def main():
