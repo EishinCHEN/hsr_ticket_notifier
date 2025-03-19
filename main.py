@@ -7,12 +7,16 @@ from line_notifier import send_text_message
 
 def check_and_notify_holidays(holidays: list):
     """檢查明天是否有售票，若有則發送通知，若無則告知服務正常運行"""
+    # 讀取 JSON 訊息模板
+    with open("messages.json", "r", encoding="utf-8") as file:
+        messages_data = json.load(file)
+
     today = datetime.today().date()
     tomorrow = today + timedelta(days = 1)
-  
     closest_holiday_name = None
     closest_holiday_date = None
     found_sale = False
+    
     for holidaysItem in holidays:
         # 檢查最近的節日與售票日期
         if holidaysItem.saleing_date and holidaysItem.saleing_date >= today:
@@ -24,9 +28,15 @@ def check_and_notify_holidays(holidays: list):
         if(holidaysItem.saleing_date == tomorrow):
             match holidaysItem.company_name:
                 case "hsr":
-                    message = f"小精靈重磅登場✨✨\n{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假高鐵車票將於{holidaysItem.saleing_date}開始販售"
+                    random_saleing_day_beginning_message = random.choice(messages_data["saleing_day_begining"])
+                    random_saleing_day_info_area_message = random.choice(messages_data["hsr_holiday_info_area"])
+                    random_saleing_day_ending_message = random.choice(messages_data["saleing_day_ending"])
+                    message = random_saleing_day_beginning_message + holidaysItem.holiday_name + random_saleing_day_info_area_message + holidaysItem.holiday_perid + random_saleing_day_ending_message
                 case "tra":
-                    message = f"小精靈重磅登場✨✨\n{holidaysItem.holiday_perid}{holidaysItem.holiday_name}連假台鐵車票將於{holidaysItem.saleing_date}開始販售"
+                    random_saleing_day_beginning_message = random.choice(messages_data["saleing_day_begining"])
+                    random_saleing_day_info_area_message = random.choice(messages_data["tra_holiday_info_area"])
+                    random_saleing_day_ending_message = random.choice(messages_data["saleing_day_ending"])
+                    message = random_saleing_day_beginning_message + holidaysItem.holiday_name + random_saleing_day_info_area_message + holidaysItem.holiday_perid + random_saleing_day_ending_message
       
             send_text_message(message) # 發送售票通知
             found_sale = True
@@ -34,14 +44,10 @@ def check_and_notify_holidays(holidays: list):
 
     # 待售票資訊迭待完成再寄送正常運行通知
     if not found_sale:
-        # 讀取 JSON 訊息模板
-        with open("messages.json", "r", encoding="utf-8") as file:
-            messages_data = json.load(file)
-        
         # 組合訊息內容
-        random_beginning_message = random.choice(messages_data["beginning"])
-        random_ending_message = random.choice(messages_data["ending"])
-        message = random_beginning_message+"\n明天沒有賣"+closest_holiday_name+"的票~"+random_ending_message
+        random_mormal_day_beginning_message = random.choice(messages_data["normal_day_beginning"])
+        random_mormal_day_ending_message = random.choice(messages_data["normal_day_ending"])
+        message = random_mormal_day_beginning_message + closest_holiday_name + random_mormal_day_ending_message
         send_text_message(message)  # 發送正常運行通知
 
 def main():
