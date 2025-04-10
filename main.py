@@ -15,17 +15,29 @@ def check_and_notify_holidays(holidays: list):
     tomorrow = today + timedelta(days = 1)
     closest_holiday_name = None
     closest_holiday_date = None
+    started_saleing_holiday_name = None
     found_sale = False
     
     for holidaysItem in holidays:
         # 檢查最近的節日與售票日期
-        if holidaysItem.saleing_date and holidaysItem.saleing_date >= today:
+        if holidaysItem.saleing_date and holidaysItem.saleing_date > today:
             if closest_holiday_date is None or holidaysItem.saleing_date < closest_holiday_date:
                 closest_holiday_date = holidaysItem.saleing_date
                 closest_holiday_name = holidaysItem.holiday_name
         
+        # 檢查最近一個已經開始販售車票的節日
+        if holidaysItem.saleing_date and holidaysItem.saleing_date == today:
+            started_saleing_holiday_name = holidaysItem.holiday_name
+            match holidaysItem.company_name:
+                case "hsr":
+                    message = random.choice(messages_data["saleing_started_begining"]) + started_saleing_holiday_name +random.choice(messages_data["saleing_started_hsr_area"])
+                case "tra":
+                    message = random.choice(messages_data["saleing_started_begining"]) + started_saleing_holiday_name +random.choice(messages_data["saleing_started_tra_area"])
+            send_text_message(message)
+            found_sale = True
+
         # 檢查是否為明天售票
-        if(holidaysItem.saleing_date == tomorrow):
+        if holidaysItem.saleing_date and holidaysItem.saleing_date == tomorrow:
             match holidaysItem.company_name:
                 case "hsr":
                     random_saleing_day_beginning_message = random.choice(messages_data["saleing_day_begining"])
