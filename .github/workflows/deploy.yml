@@ -4,8 +4,6 @@ on:
   schedule:
     - cron: "0 13 * * *" # 台灣時間21:00
 
-  push:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
