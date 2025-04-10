@@ -40,7 +40,6 @@ def check_and_notify_holidays(holidays: list):
       
             send_text_message(message) # 發送售票通知
             found_sale = True
-            break
 
     # 待售票資訊迭待完成再寄送正常運行通知
     if not found_sale:
