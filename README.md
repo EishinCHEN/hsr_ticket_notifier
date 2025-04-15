@@ -11,6 +11,6 @@ Tech Stack:
 - Scheduled tasks via cron
   
 <div style="display: flex; justify-content: center; gap: 10px;">
-  <img src="https://github.com/EishinCHEN/hsr_ticket_notifier/blob/64a8d52da5ca6a60c7a2a4a4e75032468c403765/images/line_bot.jpg" style="height: 300px; object-fit: contain;">
-  <img src="https://github.com/EishinCHEN/hsr_ticket_notifier/blob/5ae11f759423fdca57130dd76d961122e95ec09e/images/messageInfo.jpg" style="height: 300px; object-fit: contain;">
+  <img src="https://github.com/EishinCHEN/hsr_ticket_notifier/blob/64a8d52da5ca6a60c7a2a4a4e75032468c403765/images/line_bot.jpg" style="height: 500px; object-fit: contain;">
+  <img src="https://github.com/EishinCHEN/hsr_ticket_notifier/blob/5ae11f759423fdca57130dd76d961122e95ec09e/images/messageInfo.jpg" style="height: 500px; object-fit: contain;">
 </div>
