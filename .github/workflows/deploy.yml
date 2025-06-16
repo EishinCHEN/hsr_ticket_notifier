@@ -24,6 +24,7 @@ jobs:
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          REQUESTS_CA_BUNDLE: ${{ secrets.RAILWAY_CRT }}
         run: python main.py
 
 
