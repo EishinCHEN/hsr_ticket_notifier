@@ -18,7 +18,7 @@ def fetch_hsr_holiday_info() -> list[HolidayInfo]:
         if index == 0:
             continue
         tds = item.find_all("td")
-        saleing_date = datetime.strptime(tds[2].text.split(' ')[0], "%Y/%m/%d").date()
-        holidays.append(HolidayInfo("hsr", tds[0].text, tds[1].text, saleing_date))
+        presale_date = datetime.strptime(tds[2].text.split(' ')[0], "%Y/%m/%d").date()
+        holidays.append(HolidayInfo("hsr", tds[0].text, tds[1].text, presale_date))
 
     return holidays

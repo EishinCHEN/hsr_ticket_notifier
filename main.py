@@ -15,7 +15,7 @@ def check_and_notify_holidays(holidays: list):
     tomorrow = today + timedelta(days = 1)
     closest_holiday_name = None
     closest_holiday_date = None
-    started_saleing_holiday_name = None
+    started_presale_holiday_name = None
     found_sale = False
     
     for holidaysItem in holidays:
@@ -27,12 +27,13 @@ def check_and_notify_holidays(holidays: list):
         
         # 檢查最近一個已經開始販售車票的節日
         if holidaysItem.saleing_date and holidaysItem.saleing_date == today:
-            started_saleing_holiday_name = holidaysItem.holiday_name
+            started_presale_holiday_name = holidaysItem.holiday_name
             match holidaysItem.company_name:
                 case "hsr":
-                    message = random.choice(messages_data["saleing_started_begining"]) + started_saleing_holiday_name +random.choice(messages_data["saleing_started_hsr_area"])
+                    message = random.choice(messages_data["presale_started_beginning"]) + started_presale_holiday_name +random.choice(messages_data["presale_started_hsr_area"])
                 case "tra":
-                    message = random.choice(messages_data["saleing_started_begining"]) + started_saleing_holiday_name +random.choice(messages_data["saleing_started_tra_area"])
+                    message = random.choice(messages_data["presale_started_beginning"]) + started_presale_holiday_name +random.choice(messages_data["presale_started_tra_area"])
+            
             send_text_message(message)
             found_sale = True
 
@@ -40,15 +41,15 @@ def check_and_notify_holidays(holidays: list):
         if holidaysItem.saleing_date and holidaysItem.saleing_date == tomorrow:
             match holidaysItem.company_name:
                 case "hsr":
-                    random_saleing_day_beginning_message = random.choice(messages_data["saleing_day_begining"])
-                    random_saleing_day_info_area_message = random.choice(messages_data["hsr_holiday_info_area"])
-                    random_saleing_day_ending_message = random.choice(messages_data["saleing_day_ending"])
-                    message = random_saleing_day_beginning_message + holidaysItem.holiday_name + random_saleing_day_info_area_message + holidaysItem.holiday_perid + random_saleing_day_ending_message
+                    random_presale_day_beginning_message = random.choice(messages_data["presale_day_beginning"])
+                    random_presale_day_info_area_message = random.choice(messages_data["hsr_holiday_info_area"])
+                    random_presale_day_ending_message = random.choice(messages_data["presale_day_ending"])
+                    message = random_presale_day_beginning_message + holidaysItem.holiday_name + random_presale_day_info_area_message + holidaysItem.holiday_perid + random_presale_day_ending_message
                 case "tra":
-                    random_saleing_day_beginning_message = random.choice(messages_data["saleing_day_begining"])
-                    random_saleing_day_info_area_message = random.choice(messages_data["tra_holiday_info_area"])
-                    random_saleing_day_ending_message = random.choice(messages_data["saleing_day_ending"])
-                    message = random_saleing_day_beginning_message + holidaysItem.holiday_name + random_saleing_day_info_area_message + holidaysItem.holiday_perid + random_saleing_day_ending_message
+                    random_presale_day_beginning_message = random.choice(messages_data["presale_day_beginning"])
+                    random_presale_day_info_area_message = random.choice(messages_data["tra_holiday_info_area"])
+                    random_presale_day_ending_message = random.choice(messages_data["presale_day_ending"])
+                    message = random_presale_day_beginning_message + holidaysItem.holiday_name + random_presale_day_info_area_message + holidaysItem.holiday_perid + random_presale_day_ending_message
       
             send_text_message(message) # 發送售票通知
             found_sale = True
@@ -56,9 +57,9 @@ def check_and_notify_holidays(holidays: list):
     # 待售票資訊迭待完成再寄送正常運行通知
     if not found_sale:
         # 組合訊息內容
-        random_mormal_day_beginning_message = random.choice(messages_data["normal_day_beginning"])
-        random_mormal_day_ending_message = random.choice(messages_data["normal_day_ending"])
-        message = random_mormal_day_beginning_message + closest_holiday_name + random_mormal_day_ending_message
+        random_normal_day_beginning_message = random.choice(messages_data["normal_day_beginning"])
+        random_normal_day_ending_message = random.choice(messages_data["normal_day_ending"])
+        message = random_normal_day_beginning_message + closest_holiday_name + random_normal_day_ending_message
         send_text_message(message)  # 發送正常運行通知
 
 def main():

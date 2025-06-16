@@ -19,21 +19,21 @@ def fetch_tra_holiday_info() -> list[HolidayInfo]:
                 continue
             case 1:
                 holiday_name = tds[0].text
-                saleing_date = convert_to_datetime(tds[1].text)
-                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, saleing_date)) 
+                presale_date = convert_to_datetime(tds[1].text)
+                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, presale_date))
             case _:
                 holiday_name = tds[0].find("p").text
-                saleing_date = convert_to_datetime(tds[1].text)
-                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, saleing_date))
+                presale_date = convert_to_datetime(tds[1].text)
+                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, presale_date))
     return holidays
 
-def convert_to_datetime(saleing_date_str):
+def convert_to_datetime(presale_date_str):
     # 範例資料 "12/03 (三) 零時"
-    saleing_date_str = saleing_date_str.strip() # 移除前後空白
-    saleing_date_str = saleing_date_str.split('(')[0] # 移除 ( 後面字樣
+    presale_date_str = presale_date_str.strip() # 移除前後空白
+    presale_date_str = presale_date_str.split('(')[0] # 移除 ( 後面字樣
 
     # 民國年轉換成西元年
-    parts = saleing_date_str.split('/')
+    parts = presale_date_str.split('/')
     if len(parts) == 3:
         year = int(parts[0])+1911 # 民國轉西元
         month = int(parts[1])
