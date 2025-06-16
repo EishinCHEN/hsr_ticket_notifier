@@ -20,11 +20,16 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt  # 確保安裝 line-bot-sdk
 
+      - name: Write railway_root.crt from secret
+        run: |
+          mkdir -p certs
+          echo "${{ secrets.RAILWAY_CRT }}" > certs/railway_root.crt
+
       - name: Run Script
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-          REQUESTS_CA_BUNDLE: ${{ secrets.RAILWAY_CRT }}
+          REQUESTS_CA_BUNDLE: "${{ github.workspace }}/certs/railway_root.crt"
         run: python main.py
 
 
