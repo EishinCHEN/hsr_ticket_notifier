@@ -30,6 +30,15 @@ jobs:
           mkdir -p certs
           printf "%s" "${{ secrets.RAILWAY_CRT }}" > certs/railway_root.crt
 
+      - name: Debug CRT file
+        run: |
+          echo "----- Dumping CRT -----"
+          cat certs/railway_root.crt
+          echo "----- File Info -----"
+          file certs/railway_root.crt
+          echo "----- First Few Lines -----"
+          head -n 5 certs/railway_root.crt
+
       - name: Run Script
         env:
           REQUESTS_CA_BUNDLE: "${{ github.workspace }}/certs/railway_root.crt"
