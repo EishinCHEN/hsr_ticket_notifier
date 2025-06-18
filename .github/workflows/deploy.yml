@@ -28,7 +28,7 @@ jobs:
       - name: Write railway_root.crt from secret
         run: |
           mkdir -p certs
-          echo "${{ secrets.RAILWAY_CRT }}" | awk '{print $0}' > certs/railway_root.crt
+          printf "%s" "${{ secrets.RAILWAY_CRT }}" > certs/railway_root.crt
 
       - name: Run Script
         env:
