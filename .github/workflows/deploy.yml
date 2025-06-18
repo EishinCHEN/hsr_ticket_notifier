@@ -30,14 +30,9 @@ jobs:
           mkdir -p certs
           printf "%s" "${{ secrets.RAILWAY_CRT }}" > certs/railway_root.crt
 
-      - name: Debug CRT file
+      - name: Validate certificate with OpenSSL
         run: |
-          echo "----- Dumping CRT -----"
-          cat certs/railway_root.crt
-          echo "----- File Info -----"
-          file certs/railway_root.crt
-          echo "----- First Few Lines -----"
-          head -n 5 certs/railway_root.crt
+          openssl x509 -in certs/railway_root.crt -text -noout
 
       - name: Run Script
         env:
