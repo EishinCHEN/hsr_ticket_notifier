@@ -34,7 +34,10 @@ jobs:
         run: |
           openssl x509 -in certs/railway_root.crt -text -noout
 
+      - name: Combine railway_root.crt with default certs
+        run: |
+          CERT_PATH=$(python -c "import certifi; print(certifi.where())")
+          cat certs/railway_root.crt >> $CERT_PATH
+
       - name: Run Script
-        env:
-          REQUESTS_CA_BUNDLE: "${{ github.workspace }}/certs/railway_root.crt"
         run: python main.py
