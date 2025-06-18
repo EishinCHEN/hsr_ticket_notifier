@@ -28,7 +28,7 @@ jobs:
       - name: Write railway_root.crt from secret
         run: |
           mkdir -p certs
-          printf "%s" "${{ secrets.RAILWAY_CRT }}" > certs/railway_root.crt
+          printf "%s" "${{ secrets.RAILWAY_CRT }}" | base64 -d > certs/railway_root.crt
 
       - name: Validate certificate with OpenSSL
         run: |
