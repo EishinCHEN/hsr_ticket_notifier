@@ -1,3 +1,4 @@
+import os
 import requests
 import bs4
 from models import HolidayInfo 
@@ -5,7 +6,8 @@ from datetime import datetime
 
 def fetch_tra_holiday_info() -> list[HolidayInfo]:
     # 取得台鐵公告連假售票資訊
-    response = requests.get("https://www.railway.gov.tw/tra-tip-web/tip/tip00C/tipC21/view?subCode=8ae4cac28d0e8e3d018d131085d908fe")
+    verify_ssl = os.getenv("VERIFY_SSL") == "true"
+    response = requests.get("https://www.railway.gov.tw/tra-tip-web/tip/tip00C/tipC21/view?subCode=8ae4cac28d0e8e3d018d131085d908fe", verify=verify_ssl)
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
     # 取得表格區塊
