@@ -16,15 +16,11 @@ def fetch_tra_holiday_info() -> list[HolidayInfo]:
     for index, item in enumerate(news.find_all("tr")):
         tds = item.find_all("td") 
         match index:
-            case 0 | 2:
+            case 0 | 3:
                 # 跳過標題列、春節連假第二列
                 continue
-            case 1:
-                holiday_name = tds[0].text
-                presale_date = convert_to_datetime(tds[1].text)
-                holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, presale_date))
             case _:
-                holiday_name = tds[0].find("p").text
+                holiday_name = tds[0].text
                 presale_date = convert_to_datetime(tds[1].text)
                 holidays.append(HolidayInfo("tra", holiday_name, tds[3].text, presale_date))
     return holidays

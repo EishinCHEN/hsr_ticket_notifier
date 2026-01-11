@@ -21,11 +21,12 @@ def fetch_hsr_holiday_info() -> list[HolidayInfo]:
         
         tds = item.find_all("td")
         if len(tds) >= 3:
-            presale_date = datetime.strptime(tds[2].text.split(' ')[0], "%Y/%m/%d").date()
-            if tds[2].has_attr('rowspan'):
-                comm_presale_date = presale_date
-        else :
-            presale_date = presale_date
-        holidays.append(HolidayInfo("hsr", tds[0].text, tds[1].text, presale_date))
+            noticed_date = tds[2].text.split(' ')[0]
+            if len(noticed_date) == 10 :
+                # 避免截取到未公布販售日期的資訊
+                presale_date = datetime.strptime(noticed_date, "%Y/%m/%d").date() 
+                if tds[2].has_attr('rowspan'):
+                    comm_presale_date = presale_date
+                holidays.append(HolidayInfo("hsr", tds[0].text, tds[1].text, presale_date))
 
     return holidays
