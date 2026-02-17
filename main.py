@@ -1,6 +1,6 @@
 import json
 import random
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta, timezone, time
 from hsr_spider import fetch_hsr_holiday_info
 from tra_spider import fetch_tra_holiday_info
 from line_notifier import send_text_message
@@ -12,6 +12,9 @@ def check_and_notify_holidays(holidays: list):
         messages_data = json.load(file)
 
     today = datetime.today().date()
+    tw_tz = timezone(timedelta(hours=8))
+    tw_current_time = datetime.now(tw_tz).time()
+    target_time = time(11, 0)
     tomorrow = today + timedelta(days = 1)
     closest_holiday_name = None
     closest_holiday_date = None
@@ -25,8 +28,9 @@ def check_and_notify_holidays(holidays: list):
                 closest_holiday_date = holidaysItem.saleing_date
                 closest_holiday_name = holidaysItem.holiday_name
         
-        # 檢查最近一個已經開始販售車票的節日
-        if holidaysItem.saleing_date and holidaysItem.saleing_date == today:
+        # [早上]檢查最近一個已經開始販售車票的節日
+        if tw_current_time < target_time and holidaysItem.saleing_date and holidaysItem.saleing_date == today:
+            message = ''
             started_presale_holiday_name = holidaysItem.holiday_name
             match holidaysItem.company_name:
                 case "hsr":
@@ -34,11 +38,13 @@ def check_and_notify_holidays(holidays: list):
                 case "tra":
                     message = random.choice(messages_data["presale_started_beginning"]) + started_presale_holiday_name +random.choice(messages_data["presale_started_tra_area"])
             
-            send_text_message(message)
+            if message:
+                send_text_message(message)
             found_sale = True
 
-        # 檢查是否為明天售票
-        if holidaysItem.saleing_date and holidaysItem.saleing_date == tomorrow:
+        # [晚上]檢查是否為明天售票
+        if tw_current_time > target_time and holidaysItem.saleing_date and holidaysItem.saleing_date == tomorrow:
+            message = ''
             match holidaysItem.company_name:
                 case "hsr":
                     random_presale_day_beginning_message = random.choice(messages_data["presale_day_beginning"])
@@ -51,11 +57,12 @@ def check_and_notify_holidays(holidays: list):
                     random_presale_day_ending_message = random.choice(messages_data["presale_day_ending"])
                     message = random_presale_day_beginning_message + holidaysItem.holiday_name + random_presale_day_info_area_message + holidaysItem.holiday_perid + random_presale_day_ending_message
       
-            send_text_message(message) # 發送售票通知
+            if message:
+                send_text_message(message) # 發送售票通知
             found_sale = True
 
-    # 待售票資訊迭待完成再寄送正常運行通知
-    if not found_sale:
+    # [早上]待售票資訊迭待完成再寄送正常運行通知
+    if not found_sale and tw_current_time < target_time and today.day in {1, 15}:
         # 組合訊息內容
         random_normal_day_beginning_message = random.choice(messages_data["normal_day_beginning"])
         random_normal_day_ending_message = random.choice(messages_data["normal_day_ending"])
