@@ -11,8 +11,8 @@ def check_and_notify_holidays(holidays: list):
     with open("messages.json", "r", encoding="utf-8") as file:
         messages_data = json.load(file)
 
-    today = datetime.today().date()
     tw_tz = timezone(timedelta(hours=8))
+    today = datetime.now(tw_tz).date()
     tw_current_time = datetime.now(tw_tz).time()
     target_time = time(11, 0)
     tomorrow = today + timedelta(days = 1)
